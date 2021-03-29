@@ -36,6 +36,9 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+data "http" "myip" {
+  url = "http://ipv4.icanhazip.com"
+}
 
 resource "aws_instance" "example" {
   for_each               = aws_security_group.*.id
@@ -72,6 +75,24 @@ resource "aws_security_group" "sg_8080" {
     protocol        = "tcp"
     security_groups = [aws_security_group.sg_ping.id]
   }
+}
+
+resource "aws_security_group_rule" "allow_localhost_8080" {
+type = "ingress"
+  from_port = 8080
+  to_port = 8080                            
+  protocol = "tcp"
+  cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
+  security_group_id = aws_security_group.sg_8080.id
+}
+
+resource "aws_security_group_rule" "allow_localhost_ping" {
+type = "ingress"
+  from_port = -1
+  to_port = -1
+  protocol = "icmp"
+  cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
+  security_group_id = aws_security_group.sg_ping.id
 }
 
 output "instance_id" {
