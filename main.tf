@@ -8,14 +8,6 @@ terraform {
   required_version = "~> 0.14"
 }
 
-variable "region" {
-  description = "The AWS region your resources will be deployed"
-}
-
-variable "name" {
-  description = "The operator name running this configuration"
-}
-
 provider "aws" {
   region = var.region
 }
@@ -95,17 +87,3 @@ type = "ingress"
   security_group_id = aws_security_group.sg_ping.id
 }
 
-output "instance_id" {
-  description = "ID of the EC2 instance"
-  value       = aws_instance.example.id
-}
-
-output "instance_public_ip" {
-  description = "Public IP address of the EC2 instance"
-  value       = aws_instance.example.public_ip
-}
-
-output "instance_name" {
-  description = "Tags of the EC2 instance"
-  value       = aws_instance.example.tags
-}
