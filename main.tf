@@ -70,7 +70,7 @@ resource "aws_security_group" "sg_8080" {
     protocol        = "tcp"
     security_groups = [aws_security_group.sg_ping.id]
   }
-  // required to update apt-get
+  // connectivity to ubuntu mirrors is required to run `apt-get update` and `apt-get install apache2`
   egress {
     from_port   = 0
     to_port     = 0
