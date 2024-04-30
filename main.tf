@@ -87,7 +87,7 @@ resource "aws_security_group_rule" "allow_localhost_8080" {
   from_port = 8080
   to_port = 8080                            
   protocol = "tcp"
-  cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
+  cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
   security_group_id = aws_security_group.sg_8080.id
 }
 
@@ -96,7 +96,7 @@ resource "aws_security_group_rule" "allow_localhost_ping" {
   from_port = -1
   to_port = -1
   protocol = "icmp"
-  cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
+  cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
   security_group_id = aws_security_group.sg_ping.id
 }
 
